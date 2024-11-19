@@ -7,6 +7,21 @@ function knightMoves(start, end) {
      *   Calculate all valid moves from last item in coordinate array
      *   For each valid move, append to coordinate array and enqueue
      */
+
+    const queue = new Array([start]);
+    while (queue.length > 0) {
+        const currentPath = queue.shift();
+        const lastCoordinateInPath = currentPath[currentPath.length - 1];
+        if (lastCoordinateInPath[0] === end[0] && lastCoordinateInPath[1] === end[1]) {
+            return currentPath;
+        }
+        getValidKnightMovesForCoordinate(lastCoordinateInPath[0], lastCoordinateInPath[1]).forEach((coordinate) => {
+            const backtrackCoordinate = currentPath[currentPath.length - 2];
+            if (backtrackCoordinate === undefined || backtrackCoordinate === null || coordinate[0] !== backtrackCoordinate[0] || coordinate[1] !== lastCoordinateInPath[1]) {
+                queue.push([...currentPath, coordinate]);
+            }
+        });
+    }
 }
 
 function getValidKnightMovesForCoordinate(x, y) {
@@ -17,8 +32,13 @@ function getValidKnightMovesForCoordinate(x, y) {
     return validKnightMoves;
 }
 
-console.log(getValidKnightMovesForCoordinate(0, 7));
-console.log(getValidKnightMovesForCoordinate(3, 3));
-console.log(getValidKnightMovesForCoordinate(0, 0));
-console.log(getValidKnightMovesForCoordinate(7, 0));
-console.log(getValidKnightMovesForCoordinate(7, 7));
+// console.log(getValidKnightMovesForCoordinate(0, 7));
+// console.log(getValidKnightMovesForCoordinate(3, 3));
+// console.log(getValidKnightMovesForCoordinate(0, 0));
+// console.log(getValidKnightMovesForCoordinate(7, 0));
+// console.log(getValidKnightMovesForCoordinate(7, 7));
+
+console.log(knightMoves([0, 0], [3, 3]));
+console.log(knightMoves([3, 3], [0, 0]));
+console.log(knightMoves([0, 0], [7, 7]));
+console.log(knightMoves([3, 3], [4, 3]));
